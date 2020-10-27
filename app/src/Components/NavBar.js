@@ -12,8 +12,8 @@ const NavBarStyled = styled.header`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 15px;
-	background-color: papayawhip;
+	padding: 0 40px;
+	background-color: #FFD5EA;
 	color: #0F570F;
 `;
 
@@ -42,7 +42,6 @@ const Btn = styled.button`
 
 	&:hover {
 		background-color: #40AB4030;
-		cursor: pointer;
 	}
 	&:active, &:focus {
 		outline: none;
