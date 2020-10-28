@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import logoImg from '../image/logo.svg';
+import { Button } from './Button';
 
 const NavBarStyled = styled.header`
 	position: fixed;
@@ -54,6 +55,6 @@ export const NavBar = () => (
 			<ImgLogo src={logoImg} alt='logo'/>
 			<H1>JuiceFruit</H1>
 		</Logo>
-		<Btn>Войти</Btn>
+		<Button>Войти</Button>
 	</NavBarStyled>
 );

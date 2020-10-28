@@ -45,10 +45,14 @@ const Price = styled.p`
 	font-size: 20px;
 `;
 
-export const ListItem = ({ itemList }) => (
+export const ListItem = ({ itemList, setOpenItem }) => (
 	<List>
 		{itemList.map(item => (
-			<Item key={item.id} img={item.img}>
+			<Item 
+				key={item.id} 
+				img={item.img}
+				onClick={() => {setOpenItem(item)}}
+			>
 				<p>{item.name}</p>
 				<Price className='price'>{item.price.toLocaleString('ru-RU',
 				{style: 'currency', currency: 'RUB'})}</Price>
