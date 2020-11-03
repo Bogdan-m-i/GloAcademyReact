@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from '../Style/Button';
+import { CountItem } from './CountItem';
+import { useCount } from '../Hooks/useCount';
+import { formatCurrency } from '../Functions/secondaryFunction';
 
 const Overlay = styled.div`
 	position: fixed;
@@ -51,7 +54,16 @@ const ModalFooter = styled.div`
 	text-align: center;
 `;
 
+const TotalPriceItem = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+export const totalPriceItems = order => order.price * order.count;
+
 export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
+
+	const counter = useCount();
 
 	const closeModal = (e) => {
 		if (e.target.id === 'overlay') {
@@ -60,7 +72,8 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 	}
 
 	const order = {
-		...openItem
+		...openItem,
+		count: counter.count,
 	};
 
 	const addToOrder = () => {
@@ -78,6 +91,11 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 						<p>{openItem.price.toLocaleString('ru-RU',
 						{style: 'currency', currency: 'RUB'})}</p>
 					</ModalHeader>
+					<CountItem {...counter}/>
+					<TotalPriceItem>
+						<span>Цена:</span>
+						<span>{formatCurrency(totalPriceItems(order))}</span>
+					</TotalPriceItem>
 					<ModalFooter>
 						<Button onClick={addToOrder}>Добавить</Button>
 					</ModalFooter>
@@ -86,3 +104,6 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 		</Overlay>
 	);
 }
+
+// TotalPriceItem(order).toLocaleString('ru-RU',
+// 						{style: 'currency', currency: 'RUB'})
