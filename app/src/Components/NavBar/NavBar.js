@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import logoImg from '../image/logo.svg';
-import { Button } from './Button';
+import logoImg from '../../image/logo.svg';
+import { Button } from '../Style/Button';
 
 const NavBarStyled = styled.header`
 	position: fixed;
@@ -9,7 +9,7 @@ const NavBarStyled = styled.header`
 	left: 0;
 	z-index: 999;
 	height: 80px;
-	width: 100vw;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -32,22 +32,22 @@ const ImgLogo = styled.img`
 	width: 50px;
 `;
 
-const Btn = styled.button`
-	font-family: inherit;
-	font-size: 0.8rem;
-	color: #0F570F;
-	border: 1px solid #0F570F;
-	border-radius: 6px 34px 0px 30px;
-	padding: 7px 16px;
-	background-color: transparent;
+// const Btn = styled.button`
+// 	font-family: inherit;
+// 	font-size: 0.8rem;
+// 	color: #0F570F;
+// 	border: 1px solid #0F570F;
+// 	border-radius: 6px 34px 0px 30px;
+// 	padding: 7px 16px;
+// 	background-color: transparent;
 
-	&:hover {
-		background-color: #40AB4030;
-	}
-	&:active, &:focus {
-		outline: none;
-	}
-`;
+// 	&:hover {
+// 		background-color: #40AB4030;
+// 	}
+// 	&:active, &:focus {
+// 		outline: none;
+// 	}
+// `;
 
 export const NavBar = () => (
 	<NavBarStyled>
