@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '../Style/Button';
 import { OrderListItem } from './OrderListItem';
-import { totalPriceItems } from '../Modal/ModalItem';
-import { formatCurrency } from '../Functions/secondaryFunction';
+import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
 
 const OrderStyled = styled.section`
 	position: fixed;
