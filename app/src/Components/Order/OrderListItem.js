@@ -4,7 +4,6 @@ import Trash from '../../image/trash.svg';
 import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
 
 const OrderItemStyled = styled.li`
-	display: flex;
 	margin: 15px 0;
 `;
 
@@ -30,11 +29,32 @@ const TrashButton = styled.button`
 	cursor: pointer;
 `;
 
+const Product = styled.div`
+	display: flex;
+`;
+
+const Toppings = styled.div`
+	color: gray;
+	font-size: 14px;
+	margin-left: 5px;
+`;
+
 export const OrderListItem = ({ order }) => (
 	<OrderItemStyled>
-		<ItemName>{order.name}</ItemName>
-		<span>{order.count}</span>
-		<ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
-		<TrashButton/>
+		<Product>
+			<ItemName>{order.name}</ItemName>
+			<span>{order.count}</span>
+			<ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
+			<TrashButton/>
+		</Product>
+			{order.topping.map((item, key) => {
+				if (item.checked) {
+					return (
+						<Toppings key={key}>
+							+ {item.name}
+						</Toppings>
+					)
+				}
+			})}
 	</OrderItemStyled>
 );

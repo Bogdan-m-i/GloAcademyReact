@@ -33,12 +33,9 @@ const OrderList = styled.ul`
 
 const OrderTotal = styled.div`
 	display: flex;
+	justify-content: space-between;
 	text-align: left;
 	margin: 0 30px 30px;
-
-	& span:first-child {
-		flex-grow: 1;
-	}
 `;
 
 const OrderFooter = styled.div`
@@ -53,6 +50,9 @@ export const Order = ({ orders }) => {
 
 	const total = orders.reduce((result, order)=>
 		totalPriceItems(order) + result, 0);
+
+	const totalCounter = orders.reduce((result, order)=>
+		order.count + result, 0);
 
 	return (
 		<OrderStyled>
@@ -69,6 +69,7 @@ export const Order = ({ orders }) => {
 			<OrderFooter>
 				<OrderTotal>
 					<span>Итого</span>
+					<span>{totalCounter} шт.</span>
 					<span>{formatCurrency(total)}</span>
 				</OrderTotal>
 				<Button>Оформить</Button>
