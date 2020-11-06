@@ -38,13 +38,13 @@ const Toppings = styled.div`
 	margin-left: 5px;
 `;
 
-export const OrderListItem = ({ order, removeOrderItem }) => (
-	<OrderItemStyled>
+export const OrderListItem = ({ order, removeOrderItem, index, setOpenItem }) => (
+	<OrderItemStyled onClick={() => setOpenItem({...order, index})}>
 		<Product>
 			<ItemName>{order.name} {order.choice}</ItemName>
 			<span>{order.count}шт.</span>
 			<ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
-			<TrashButton onClick={() => {removeOrderItem(order)}}/>
+			<TrashButton onClick={(e) => {e.stopPropagation(); removeOrderItem(index)}}/>
 		</Product>
 			{order.topping
 				.filter(item => item.checked)

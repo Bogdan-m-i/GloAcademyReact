@@ -46,7 +46,7 @@ const EmptyList = styled.p`
 	text-align: center;
 `;
 
-export const Order = ({ orders, setOrders }) => {
+export const Order = ({ orders, setOrders, setOpenItem }) => {
 
 	const total = orders.reduce((result, order)=>
 		totalPriceItems(order) + result, 0);
@@ -54,13 +54,9 @@ export const Order = ({ orders, setOrders }) => {
 	const totalCounter = orders.reduce((result, order)=>
 		order.count + result, 0);
 
-	const removeOrderItem = (order) => {
-		orders.forEach((item, key) => {
-			if (item === order) {
-				orders.splice(key, 1);
-				setOrders([...orders]);
-			}
-		});
+	const removeOrderItem = (i) => {
+		orders.splice(i, 1);
+		setOrders([...orders]);
 	}
 
 	return (
@@ -69,7 +65,12 @@ export const Order = ({ orders, setOrders }) => {
 			<OrderContent>
 				{orders.length ? 
 				<OrderList>
-					{orders.map((order, key) => <OrderListItem removeOrderItem={removeOrderItem} key={key} order={order}/>)}
+					{orders.map((order, key) => <OrderListItem
+												removeOrderItem={removeOrderItem}
+												key={key}
+												order={order}
+												index={key}
+												setOpenItem={setOpenItem}/>)}
 				</OrderList> :
 				<EmptyList>
 					Список заказов пуст
