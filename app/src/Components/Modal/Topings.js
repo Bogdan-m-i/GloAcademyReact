@@ -19,7 +19,7 @@ export function Topings({ toppings, checkToppings }) {
 
 	return (
 		<>
-			<h3>Добавки</h3>
+			<h3>Дополнительно добавить:</h3>
 			<ToppingWrap>
 				{toppings.map((item, i) => (
 					<ToppingLabel key={i}>

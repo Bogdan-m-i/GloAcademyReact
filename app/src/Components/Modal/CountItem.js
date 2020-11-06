@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useOpenItem } from '../Hooks/useOpenItem';
 
 const CountWrapper = styled.div`
 	display: flex;

@@ -13,8 +13,7 @@ const ItemName = styled.span`
 
 const ItemPrice = styled.span`
 	margin: 0 15px 0 30px;
-	min-width: 65px;
-	text-align: right;
+	min-width: 85px;
 `;
 
 const TrashButton = styled.button`
@@ -39,22 +38,20 @@ const Toppings = styled.div`
 	margin-left: 5px;
 `;
 
-export const OrderListItem = ({ order }) => (
+export const OrderListItem = ({ order, removeOrderItem }) => (
 	<OrderItemStyled>
 		<Product>
-			<ItemName>{order.name}</ItemName>
-			<span>{order.count}</span>
+			<ItemName>{order.name} {order.choice}</ItemName>
+			<span>{order.count}шт.</span>
 			<ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
-			<TrashButton/>
+			<TrashButton onClick={() => {removeOrderItem(order)}}/>
 		</Product>
-			{order.topping.map((item, key) => {
-				if (item.checked) {
-					return (
-						<Toppings key={key}>
-							+ {item.name}
-						</Toppings>
-					)
-				}
-			})}
+			{order.topping
+				.filter(item => item.checked)
+				.map((item, key) => (
+					<Toppings key={key}>
+						+ {item.name}
+					</Toppings>
+				))}
 	</OrderItemStyled>
 );
