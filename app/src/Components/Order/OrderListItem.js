@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import Trash from '../../image/trash.svg';
 import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
 
 const OrderItemStyled = styled.li`
 	margin: 15px 0;
+	cursor: pointer;
 `;
 
 const ItemName = styled.span`
@@ -38,20 +39,25 @@ const Toppings = styled.div`
 	margin-left: 5px;
 `;
 
-export const OrderListItem = ({ order, removeOrderItem, index, setOpenItem }) => (
-	<OrderItemStyled onClick={() => setOpenItem({...order, index})}>
-		<Product>
-			<ItemName>{order.name} {order.choice}</ItemName>
-			<span>{order.count}шт.</span>
-			<ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
-			<TrashButton onClick={(e) => {e.stopPropagation(); removeOrderItem(index)}}/>
-		</Product>
-			{order.topping
-				.filter(item => item.checked)
-				.map((item, key) => (
-					<Toppings key={key}>
-						+ {item.name}
-					</Toppings>
-				))}
-	</OrderItemStyled>
-);
+export const OrderListItem = ({ order, removeOrderItem, index, setOpenItem }) => {
+
+	const refDelButton = useRef(null);
+
+	return (
+		<OrderItemStyled onClick={(e) => e.target !== refDelButton.current && setOpenItem({...order, index})}>
+			<Product>
+				<ItemName>{order.name} {order.choice}</ItemName>
+				<span>{order.count}шт.</span>
+				<ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
+				<TrashButton ref={refDelButton} onClick={() => {removeOrderItem(index)}}/>
+			</Product>
+				{order.topping
+					.filter(item => item.checked)
+					.map((item, key) => (
+						<Toppings key={key}>
+							+ {item.name}
+						</Toppings>
+					))}
+		</OrderItemStyled>
+	)
+};

@@ -46,7 +46,7 @@ const EmptyList = styled.p`
 	text-align: center;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem }) => {
+export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn}) => {
 
 	const total = orders.reduce((result, order)=>
 		totalPriceItems(order) + result, 0);
@@ -57,6 +57,14 @@ export const Order = ({ orders, setOrders, setOpenItem }) => {
 	const removeOrderItem = (i) => {
 		orders.splice(i, 1);
 		setOrders([...orders]);
+	}
+
+	const startOrder = () => {
+		if (authentication) {
+			console.log(orders);
+		} else {
+			logIn();
+		}
 	}
 
 	return (
@@ -82,7 +90,7 @@ export const Order = ({ orders, setOrders, setOpenItem }) => {
 					<span>{totalCounter} шт.</span>
 					<span>{formatCurrency(total)}</span>
 				</OrderTotal>
-				<Button>Оформить</Button>
+				<Button onClick={startOrder}>Оформить</Button>
 			</OrderFooter>
 		</OrderStyled>
 	)

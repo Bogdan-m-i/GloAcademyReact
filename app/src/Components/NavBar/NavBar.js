@@ -32,29 +32,15 @@ const ImgLogo = styled.img`
 	width: 50px;
 `;
 
-// const Btn = styled.button`
-// 	font-family: inherit;
-// 	font-size: 0.8rem;
-// 	color: #0F570F;
-// 	border: 1px solid #0F570F;
-// 	border-radius: 6px 34px 0px 30px;
-// 	padding: 7px 16px;
-// 	background-color: transparent;
-
-// 	&:hover {
-// 		background-color: #40AB4030;
-// 	}
-// 	&:active, &:focus {
-// 		outline: none;
-// 	}
-// `;
-
-export const NavBar = () => (
+export const NavBar = ({ authentication, logIn, logOut }) => (
 	<NavBarStyled>
 		<Logo>
 			<ImgLogo src={logoImg} alt='logo'/>
 			<H1>JuiceFruit</H1>
 		</Logo>
-		<Button>Войти</Button>
+		{authentication ?
+		<Button onClick={logOut}>{authentication.displayName} <br/> Выйти</Button>
+		:
+		<Button onClick={logIn}>Войти</Button>}
 	</NavBarStyled>
 );
