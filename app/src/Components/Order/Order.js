@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '../Style/Button';
 import { OrderListItem } from './OrderListItem';
-import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
+import { totalPriceItems, formatCurrency, projection } from '../Functions/secondaryFunction';
 
 const OrderStyled = styled.section`
 	position: fixed;
@@ -46,7 +46,16 @@ const EmptyList = styled.p`
 	text-align: center;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn}) => {
+const rulesData = {
+	name: ['name'],
+	price: ['price'],
+	count: ['count'],
+	topping: ['topping', (arr) => arr.filter((obj) => obj.checked).map((obj) => obj.name),
+		(arr) => arr.length ? arr : 'no toppings'],
+	choice: ['choice', (item) => item ? item : 'no choice'],
+}
+
+export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase}) => {
 
 	const total = orders.reduce((result, order)=>
 		totalPriceItems(order) + result, 0);
@@ -59,9 +68,27 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn}) 
 		setOrders([...orders]);
 	}
 
+	const dataBase = firebaseDatabase();
+
+	const sandOrder = () => {
+		const newOrder = orders.map((projection(rulesData)))
+		dataBase.ref('orders').push().set({
+			clientName: authentication.displayName,
+			email: authentication.email,
+			order: newOrder,
+		}).then(function() {
+			setOrders([]);
+			console.log('Заказ успешно выполнен');
+		})
+		.catch(function(error) {
+			console.log('Ошибка записи заказа');
+		});;
+		
+	}
+
 	const startOrder = () => {
 		if (authentication) {
-			console.log(orders);
+			sandOrder();
 		} else {
 			logIn();
 		}
