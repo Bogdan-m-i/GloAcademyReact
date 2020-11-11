@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import dbMenu from '../DBMenu';
+//import dbMenu from '../DBMenu';
 import { ListItem } from './listItem';
 import { Banner } from './Banner';
+import { useFetch } from '../Hooks/useFetch';
+import loadGif from '../../image/loading.gif';
 
 const MenuStyled = styled.main`
 	background-color: papayawhip;
@@ -14,23 +16,56 @@ const SectionMenu = styled.section`
 	padding: 40px;
 `;
 
-export const Menu = ({ setOpenItem }) => (
-	<MenuStyled>
-		<Banner/>
-		<SectionMenu>
-			<h2>Фруктовые наборы</h2>
-			<ListItem 
-				itemList={dbMenu.burger} 
-				setOpenItem={setOpenItem}
-			/>
-		</SectionMenu>
+const SectionLoading = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-		<SectionMenu>
-			<h2>Смузи</h2>
-			<ListItem 
-				itemList={dbMenu.other}
-				setOpenItem={setOpenItem}
-			/>
-		</SectionMenu>
-	</MenuStyled>
-);
+	div {
+		margin: 30px;
+		font-size: 30px;
+	}
+
+	img {
+		max-width: 100%;
+	}
+`;
+
+export const Menu = ({ setOpenItem }) => {
+
+	const res = useFetch();
+
+	const dbMenu = res.response;
+
+	return (
+		<MenuStyled>
+			<Banner/>
+			{res.response ? 
+				<>
+					<SectionMenu>
+						<h2>Фруктовые наборы</h2>
+						<ListItem 
+							itemList={dbMenu.fruitSet} 
+							setOpenItem={setOpenItem}
+						/>
+					</SectionMenu>
+			
+					<SectionMenu>
+						<h2>Смузи</h2>
+						<ListItem 
+							itemList={dbMenu.smoothies}
+							setOpenItem={setOpenItem}
+						/>
+					</SectionMenu>
+				</>
+				: res.error ?
+					<div>Ошибка загрузки</div>
+				:
+					<SectionLoading>
+						<div>Загрузка</div>
+						<div><img src={loadGif}/></div>
+					</SectionLoading>
+			}
+		</MenuStyled>
+	);
+};
