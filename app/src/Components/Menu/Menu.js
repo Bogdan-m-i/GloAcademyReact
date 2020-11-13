@@ -5,6 +5,9 @@ import { ListItem } from './listItem';
 import { Banner } from './Banner';
 import { useFetch } from '../Hooks/useFetch';
 import loadGif from '../../image/loading.gif';
+/////
+import { useDB } from '../Hooks/useDB';
+////
 
 const MenuStyled = styled.main`
 	background-color: papayawhip;
@@ -31,11 +34,18 @@ const SectionLoading = styled.div`
 	}
 `;
 
-export const Menu = ({ setOpenItem }) => {
+export const Menu = ({ setOpenItem, firebaseDatabase }) => {
 
-	const res = useFetch();
+	//////////////////////////////////useFetch///////////////
+	// const res = useFetch();
+	// const dbMenu = res.response;
+	/////////////////////////////////////////////////
 
+	////////////////////////////////////useDB/////////////
+	let firebaseRes = firebaseDatabase().ref(`goods`).once('value');
+	const res = useDB(firebaseRes);
 	const dbMenu = res.response;
+	/////////////////////////////////////////////////
 
 	return (
 		<MenuStyled>

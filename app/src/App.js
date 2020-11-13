@@ -33,7 +33,7 @@ function App() {
 				{...openItem}
 				{...auth}
 				firebaseDatabase={firebase.database}/>
-			<Menu {...openItem}/>
+			<Menu {...openItem} firebaseDatabase={firebase.database}/>
 			{openItem.openItem && <ModalItem {...openItem} {...orders}/>}
 		</>
 	);
