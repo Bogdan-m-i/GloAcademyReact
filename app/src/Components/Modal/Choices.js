@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import { ContextItem } from '../Functions/contextItem';
+import {Context} from '../Functions/context';
 import styled from 'styled-components';
 
 const ChoiceWrap = styled.div`
@@ -15,7 +17,10 @@ const ChoiceRadio = styled.input`
 	cursor: pointer;
 `;
 
-export function Choices ({ openItem, choice, changeChoices }) {
+export function Choices () {
+	const {choices: { choice, changeChoices }} = useContext(ContextItem);
+	const {openItem: { openItem }} = useContext(Context);
+
 	return (
 		<>
 			<h3>Выберите объем:</h3>

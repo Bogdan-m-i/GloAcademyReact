@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext} from 'react';
+import { Context } from '../Functions/context';
 import styled from 'styled-components';
 import Trash from '../../image/trash.svg';
 import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
@@ -39,7 +40,8 @@ const Toppings = styled.div`
 	margin-left: 5px;
 `;
 
-export const OrderListItem = ({ order, removeOrderItem, index, setOpenItem }) => {
+export const OrderListItem = ({ order, removeOrderItem, index }) => {
+	const {openItem: { setOpenItem }} = useContext(Context);
 
 	const refDelButton = useRef(null);
 

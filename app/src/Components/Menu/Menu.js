@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
-//import dbMenu from '../DBMenu';
 import { ListItem } from './listItem';
 import { Banner } from './Banner';
-import { useFetch } from '../Hooks/useFetch';
 import loadGif from '../../image/loading.gif';
+import { Context } from '../Functions/context';
 /////
+//import { useFetch } from '../Hooks/useFetch';
+//import dbMenu from '../DBMenu';
 import { useDB } from '../Hooks/useDB';
 ////
 
@@ -34,18 +35,20 @@ const SectionLoading = styled.div`
 	}
 `;
 
-export const Menu = ({ setOpenItem, firebaseDatabase }) => {
+export const Menu = () => {
+	const { openItem: { setOpenItem } } = useContext(Context);
+	const {firebaseDatabase} = useContext(Context);
 
-	//////////////////////////////////useFetch///////////////
+	////////////////Загрузка данных из файла/////////////////////////
 	// const res = useFetch();
 	// const dbMenu = res.response;
-	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////useDB/////////////
+	////////////////Загрузка данных с сервера firebase///////////////
 	let firebaseRes = firebaseDatabase().ref(`goods`).once('value');
 	const res = useDB(firebaseRes);
 	const dbMenu = res.response;
-	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
 
 	return (
 		<MenuStyled>
@@ -56,7 +59,6 @@ export const Menu = ({ setOpenItem, firebaseDatabase }) => {
 						<h2>Фруктовые наборы</h2>
 						<ListItem 
 							itemList={dbMenu.fruitSet} 
-							setOpenItem={setOpenItem}
 						/>
 					</SectionMenu>
 			
@@ -64,7 +66,6 @@ export const Menu = ({ setOpenItem, firebaseDatabase }) => {
 						<h2>Смузи</h2>
 						<ListItem 
 							itemList={dbMenu.smoothies}
-							setOpenItem={setOpenItem}
 						/>
 					</SectionMenu>
 				</>
@@ -73,7 +74,7 @@ export const Menu = ({ setOpenItem, firebaseDatabase }) => {
 				:
 					<SectionLoading>
 						<div>Загрузка</div>
-						<div><img src={loadGif}/></div>
+						<div><img src={loadGif} alt="Загрузка..."/></div>
 					</SectionLoading>
 			}
 		</MenuStyled>

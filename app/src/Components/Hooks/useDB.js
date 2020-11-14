@@ -22,8 +22,10 @@ export const useDB = (prom) => {
 		prom.then(snapshot => {
 			const response = snapshot.val();
 			setResponse(response);
+		}).catch(err => {
+			setError(err);
 		})
-	}, []);
+	}, [prom]);
 
 	return { response, error };
 

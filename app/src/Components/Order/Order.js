@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import { Context } from '../Functions/context';
 import styled from 'styled-components';
 import { Button } from '../Style/Button';
 import { OrderListItem } from './OrderListItem';
-import { totalPriceItems, formatCurrency, projection } from '../Functions/secondaryFunction';
+import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
+import {OrderTitle} from '../Style/OrderTitle';
+import { TotalPrice } from '../Style/TotalPrice';
 
 const OrderStyled = styled.section`
 	position: fixed;
@@ -18,24 +21,12 @@ const OrderStyled = styled.section`
 	z-index: 10;
 `;
 
-const OrderTitle = styled.h2`
-	text-align: center;
-	margin-bottom: 30px;
-`;
-
 const OrderContent = styled.div`
 	flex-grow: 1;
 `;
 
 const OrderList = styled.ul`
 	
-`;
-
-const OrderTotal = styled.div`
-	display: flex;
-	justify-content: space-between;
-	text-align: left;
-	margin: 0 30px 30px;
 `;
 
 const OrderFooter = styled.div`
@@ -46,16 +37,11 @@ const EmptyList = styled.p`
 	text-align: center;
 `;
 
-const rulesData = {
-	name: ['name'],
-	price: ['price'],
-	count: ['count'],
-	topping: ['topping', (arr) => arr.filter((obj) => obj.checked).map((obj) => obj.name),
-		(arr) => arr.length ? arr : 'no toppings'],
-	choice: ['choice', (item) => item ? item : 'no choice'],
-}
+export const Order = () => {
 
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase}) => {
+	const { orders: { orders, setOrders } } = useContext(Context);
+	const {auth: { authentication, logIn }} = useContext(Context);
+	const {orderConfirm: { setOpenOrderConfirm }} = useContext(Context);
 
 	const total = orders.reduce((result, order)=>
 		totalPriceItems(order) + result, 0);
@@ -68,32 +54,6 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, f
 		setOrders([...orders]);
 	}
 
-	const dataBase = firebaseDatabase();
-
-	const sandOrder = () => {
-		const newOrder = orders.map((projection(rulesData)))
-		dataBase.ref('orders').push().set({
-			clientName: authentication.displayName,
-			email: authentication.email,
-			order: newOrder,
-		}).then(function() {
-			setOrders([]);
-			console.log('Заказ успешно выполнен');
-		})
-		.catch(function(error) {
-			console.log('Ошибка записи заказа');
-		});;
-		
-	}
-
-	const startOrder = () => {
-		if (authentication) {
-			sandOrder();
-		} else {
-			logIn();
-		}
-	}
-
 	return (
 		<OrderStyled>
 			<OrderTitle>Ваша вкусная корзина</OrderTitle>
@@ -104,20 +64,19 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, f
 												removeOrderItem={removeOrderItem}
 												key={key}
 												order={order}
-												index={key}
-												setOpenItem={setOpenItem}/>)}
+												index={key}/>)}
 				</OrderList> :
 				<EmptyList>
 					Список заказов пуст
 				</EmptyList>}
 			</OrderContent>
 			<OrderFooter>
-				<OrderTotal>
+				<TotalPrice>
 					<span>Итого</span>
 					<span>{totalCounter} шт.</span>
 					<span>{formatCurrency(total)}</span>
-				</OrderTotal>
-				<Button onClick={startOrder}>Оформить</Button>
+				</TotalPrice>
+				<Button onClick={() => authentication ? setOpenOrderConfirm(true) : logIn()}>Оформить</Button>
 			</OrderFooter>
 		</OrderStyled>
 	)

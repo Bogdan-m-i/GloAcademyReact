@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import { Context } from '../Functions/context';
 import styled from 'styled-components';
 import { formatCurrency } from '../Functions/secondaryFunction';
 
@@ -46,17 +47,21 @@ const Price = styled.p`
 	font-size: 20px;
 `;
 
-export const ListItem = ({ itemList, setOpenItem }) => (
-	<List>
-		{itemList.map(item => (
-			<Item 
-				key={item.id} 
-				img={item.img}
-				onClick={() => {setOpenItem(item)}}
-			>
-				<p>{item.name}</p>
-				<Price className='price'>{formatCurrency(item.price)}</Price>
-			</Item>
-		))}
-	</List>
-);
+export const ListItem = ({ itemList }) => {
+	const {openItem: { setOpenItem }} = useContext(Context);
+	
+	return (
+		<List>
+			{itemList.map(item => (
+				<Item 
+					key={item.id} 
+					img={item.img}
+					onClick={() => {setOpenItem(item)}}
+				>
+					<p>{item.name}</p>
+					<Price className='price'>{formatCurrency(item.price)}</Price>
+				</Item>
+			))}
+		</List>
+	)
+};
